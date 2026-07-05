@@ -1,13 +1,78 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: #0f1a12;
 }
 
 #root {
   width: 100%;
-  height: 100%;
+  min-height: 100vh;
+}
+
+/* Gentle idle sway for resting mushrooms */
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(-2.5deg);
+  }
+  50% {
+    transform: rotate(2.5deg);
+  }
+}
+
+/* Floating spores drifting upward */
+@keyframes drift {
+  0% {
+    transform: translateY(20px) translateX(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.7;
+  }
+  85% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-120px) translateX(30px);
+    opacity: 0;
+  }
+}
+
+/* Slow mist/fog pan across the forest floor */
+@keyframes mist {
+  0% {
+    transform: translateX(-5%);
+  }
+  100% {
+    transform: translateX(5%);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-sway {
+  transform-origin: bottom center;
+  animation: sway ease-in-out infinite;
+}
+
+.animate-fade-up {
+  animation: fade-up 0.9s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-sway,
+  .animate-fade-up {
+    animation: none;
+  }
 }
