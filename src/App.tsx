@@ -289,8 +289,32 @@ const SIGS = [
 const App = () => {
   return (
     <div className="min-h-screen bg-[#1f3327] text-[#f3ecd9]">
+      {/* ============ STICKY NAV ============ */}
+      <nav className="sticky top-0 z-50 flex items-center justify-between gap-3 border-b border-white/5 bg-[#18291f]/80 px-4 py-2.5 backdrop-blur-md sm:px-10 sm:py-3 lg:px-16">
+        <div className="flex items-center gap-2.5">
+          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#294634] ring-1 ring-amber-500/30 sm:h-11 sm:w-11">
+            <Logo />
+          </span>
+          <span className="hidden sm:block text-sm font-semibold tracking-wide text-amber-100/90">
+            Colorado Mycological Society
+          </span>
+        </div>
+        <div className="flex items-center gap-0.5 overflow-x-auto rounded-full bg-[#294634]/80 px-1.5 py-1.5 ring-1 ring-white/5 sm:gap-1 sm:px-2">
+          {NAV.map((n) => (
+            <a
+              key={n.label}
+              href={n.href}
+              {...(n.external ? { target: '_blank', rel: 'noreferrer' } : {})}
+              className="shrink-0 rounded-full px-2.5 py-1.5 text-[12px] font-medium text-amber-50/80 transition-colors hover:bg-amber-500/15 hover:text-amber-100 sm:px-3.5 sm:text-[13px]"
+            >
+              {n.label}
+            </a>
+          ))}
+        </div>
+      </nav>
+
       {/* ============ HERO ============ */}
-      <header className="relative flex min-h-screen flex-col overflow-hidden">
+      <header className="relative flex min-h-[calc(100dvh-56px)] flex-col overflow-hidden">
         <div
           className="absolute inset-0"
           style={{
@@ -313,30 +337,6 @@ const App = () => {
           }}
         />
         <Spores />
-
-        {/* Nav */}
-        <nav className="relative z-20 flex items-center justify-between px-5 sm:px-10 lg:px-16 pt-6">
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#294634] ring-1 ring-amber-500/30">
-              <Logo />
-            </span>
-            <span className="hidden sm:block text-sm font-semibold tracking-wide text-amber-100/90">
-              Colorado Mycological Society
-            </span>
-          </div>
-          <div className="flex max-w-[60vw] items-center gap-0.5 overflow-x-auto rounded-full bg-[#294634]/80 px-2 py-1.5 ring-1 ring-white/5 backdrop-blur sm:gap-1">
-            {NAV.map((n) => (
-              <a
-                key={n.label}
-                href={n.href}
-                {...(n.external ? { target: '_blank', rel: 'noreferrer' } : {})}
-                className="shrink-0 rounded-full px-3 py-1.5 text-[13px] font-medium text-amber-50/80 transition-colors hover:bg-amber-500/15 hover:text-amber-100 sm:px-3.5"
-              >
-                {n.label}
-              </a>
-            ))}
-          </div>
-        </nav>
 
         {/* Hero copy — centered in the space between the nav and the mushrooms */}
         <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-6 py-8 text-center">
