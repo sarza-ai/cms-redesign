@@ -232,7 +232,7 @@ const Logo = () => (
 /* ------------------------------------------------------------------ */
 
 const NAV: { label: string; href: string; external?: boolean }[] = [
-  { label: 'About', href: '#about' },
+  { label: 'About', href: 'https://cmsweb.org/about/', external: true },
   { label: 'Events', href: '#events' },
   { label: 'Society', href: '#society' },
   { label: 'Blog', href: 'https://cmsweb.org/blog/', external: true },
