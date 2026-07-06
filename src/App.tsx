@@ -280,14 +280,14 @@ const SIGS = [
 
 const App = () => {
   return (
-    <div className="min-h-screen bg-[#14231a] text-[#f3ecd9]">
+    <div className="min-h-screen bg-[#1f3327] text-[#f3ecd9]">
       {/* ============ HERO ============ */}
       <header className="relative flex min-h-screen flex-col overflow-hidden">
         <div
           className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(120% 80% at 50% -10%, #23402c 0%, #17291d 45%, #0e1a12 100%)',
+              'radial-gradient(120% 80% at 50% -10%, #325741 0%, #22382b 45%, #1f3327 100%)',
           }}
         />
         <div
@@ -309,14 +309,14 @@ const App = () => {
         {/* Nav */}
         <nav className="relative z-20 flex items-center justify-between px-5 sm:px-10 lg:px-16 pt-6">
           <div className="flex items-center gap-2.5">
-            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#1d3324] ring-1 ring-amber-500/30">
+            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#294634] ring-1 ring-amber-500/30">
               <Logo />
             </span>
             <span className="hidden sm:block text-sm font-semibold tracking-wide text-amber-100/90">
               Colorado Mycological Society
             </span>
           </div>
-          <div className="flex max-w-[60vw] items-center gap-0.5 overflow-x-auto rounded-full bg-[#1d3324]/80 px-2 py-1.5 ring-1 ring-white/5 backdrop-blur sm:gap-1">
+          <div className="flex max-w-[60vw] items-center gap-0.5 overflow-x-auto rounded-full bg-[#294634]/80 px-2 py-1.5 ring-1 ring-white/5 backdrop-blur sm:gap-1">
             {NAV.map((n) => (
               <a
                 key={n.label}
@@ -348,7 +348,7 @@ const App = () => {
           <div className="mt-8 flex items-center justify-center gap-3">
             <a
               href="#events"
-              className="group inline-flex items-center gap-2 rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold text-[#14231a] transition-transform hover:scale-105"
+              className="group inline-flex items-center gap-2 rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold text-[#1f3327] transition-transform hover:scale-105"
             >
               See Upcoming Events
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -388,12 +388,12 @@ const App = () => {
             <HeroMushroom species="porcini" swaySeconds={5} className="h-32 w-20 sm:h-52 sm:w-36" />
             <HeroMushroom species="parasol" swaySeconds={7.5} className="h-28 w-16 sm:h-48 sm:w-28" />
           </div>
-          <div className="h-5 w-full bg-gradient-to-t from-[#0e1a12] to-transparent" />
+          <div className="h-5 w-full bg-gradient-to-t from-[#18291f] to-transparent" />
         </div>
       </header>
 
       {/* ============ ABOUT ============ */}
-      <section id="about" className="relative overflow-hidden bg-[#0e1a12] px-6 py-24 sm:py-32">
+      <section id="about" className="relative overflow-hidden bg-[#18291f] px-6 py-24 sm:py-32">
         <FloatingMushroom species="morel" width={90} bobSeconds={5.5} delay={0.2} className="left-[4%] top-16 hidden sm:block opacity-90" />
         <FloatingMushroom species="turkeytail" width={110} bobSeconds={6.5} delay={0.8} flip className="right-[5%] bottom-12 hidden sm:block opacity-90" />
         <div className="relative z-10 mx-auto max-w-3xl text-center">
@@ -424,7 +424,7 @@ const App = () => {
 
           <Reveal className="mt-12 grid grid-cols-3 gap-4">
             {STATS.map((s) => (
-              <div key={s.label} className="rounded-2xl bg-[#1d3324]/50 p-5 ring-1 ring-white/5">
+              <div key={s.label} className="rounded-2xl bg-[#294634]/50 p-5 ring-1 ring-white/5">
                 <div className="text-2xl sm:text-3xl font-bold text-amber-400">
                   {s.value}
                 </div>
@@ -436,7 +436,7 @@ const App = () => {
       </section>
 
       {/* ============ EVENTS ============ */}
-      <section id="events" className="relative overflow-hidden bg-[#14231a] px-6 py-24 sm:py-28">
+      <section id="events" className="relative overflow-hidden bg-[#1f3327] px-6 py-24 sm:py-28">
         <FloatingMushroom species="oyster" width={120} bobSeconds={7} delay={0.4} className="right-[3%] top-24 hidden lg:block opacity-80" />
         <FloatingMushroom species="puffball" width={80} bobSeconds={5} delay={1.1} flip className="left-[3%] bottom-24 hidden lg:block opacity-80" />
         <div className="relative z-10 mx-auto max-w-5xl">
@@ -466,7 +466,7 @@ const App = () => {
               <Reveal key={e.title} style={{ animationDelay: `${i * 80}ms` } as React.CSSProperties}>
                 <a
                   href="#contact"
-                  className="group flex items-center gap-5 rounded-2xl bg-[#1d3324]/60 p-5 ring-1 ring-white/5 transition-all hover:bg-[#1d3324] hover:ring-amber-500/30"
+                  className="group flex items-center gap-5 rounded-2xl bg-[#294634]/60 p-5 ring-1 ring-white/5 transition-all hover:bg-[#294634] hover:ring-amber-500/30"
                 >
                   <div className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl bg-amber-500/15 text-amber-300">
                     <span className="text-[10px] font-bold uppercase tracking-wider">
@@ -503,7 +503,7 @@ const App = () => {
       </section>
 
       {/* ============ SOCIETY ============ */}
-      <section id="society" className="relative overflow-hidden bg-[#0e1a12] px-6 py-24 sm:py-28">
+      <section id="society" className="relative overflow-hidden bg-[#18291f] px-6 py-24 sm:py-28">
         <FloatingMushroom species="lionsmane" width={110} bobSeconds={6} delay={0.6} className="left-[4%] top-28 hidden lg:block opacity-80" />
         <FloatingMushroom species="chanterelle" width={80} bobSeconds={5.5} delay={1.3} flip className="right-[4%] bottom-28 hidden lg:block opacity-80" />
         <div className="relative z-10 mx-auto max-w-5xl">
@@ -519,7 +519,7 @@ const App = () => {
           <div className="grid gap-5 sm:grid-cols-3">
             {PILLARS.map((p, i) => (
               <Reveal key={p.title} style={{ animationDelay: `${i * 80}ms` } as React.CSSProperties}>
-                <div className="h-full rounded-2xl bg-[#1d3324]/50 p-7 ring-1 ring-white/5 transition-colors hover:ring-amber-500/25">
+                <div className="h-full rounded-2xl bg-[#294634]/50 p-7 ring-1 ring-white/5 transition-colors hover:ring-amber-500/25">
                   <span className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-amber-500/15 text-amber-300">
                     <p.icon className="h-6 w-6" />
                   </span>
@@ -540,7 +540,7 @@ const App = () => {
           <div className="grid gap-5 md:grid-cols-3">
             {SIGS.map((s, i) => (
               <Reveal key={s.title} style={{ animationDelay: `${i * 80}ms` } as React.CSSProperties}>
-                <div className="h-full rounded-2xl bg-[#1d3324]/40 p-6 ring-1 ring-white/5 transition-colors hover:ring-amber-500/25">
+                <div className="h-full rounded-2xl bg-[#294634]/40 p-6 ring-1 ring-white/5 transition-colors hover:ring-amber-500/25">
                   <h4 className="text-lg font-semibold text-amber-100">{s.title}</h4>
                   <p className="mt-2 text-sm leading-relaxed text-amber-50/60">{s.body}</p>
                 </div>
@@ -551,10 +551,10 @@ const App = () => {
       </section>
 
       {/* ============ JOIN / MEMBERSHIP ============ */}
-      <section id="join" className="relative overflow-hidden bg-[#14231a] px-6 py-24 sm:py-28">
+      <section id="join" className="relative overflow-hidden bg-[#1f3327] px-6 py-24 sm:py-28">
         <FloatingMushroom species="parasol" width={90} bobSeconds={6} delay={0.5} className="left-[6%] top-20 hidden lg:block opacity-80" />
         <FloatingMushroom species="turkeytail" width={100} bobSeconds={6.5} delay={1.2} flip className="right-[6%] bottom-20 hidden lg:block opacity-80" />
-        <Reveal className="relative z-10 mx-auto max-w-2xl overflow-hidden rounded-3xl bg-gradient-to-br from-[#1d3324] to-[#0e1a12] p-10 text-center ring-1 ring-amber-500/20 sm:p-14">
+        <Reveal className="relative z-10 mx-auto max-w-2xl overflow-hidden rounded-3xl bg-gradient-to-br from-[#294634] to-[#18291f] p-10 text-center ring-1 ring-amber-500/20 sm:p-14">
           <h2 className="text-sm font-semibold uppercase tracking-[0.25em] text-amber-400">
             Become a Member
           </h2>
@@ -572,7 +572,7 @@ const App = () => {
             href="https://cmsweb.org/join/"
             target="_blank"
             rel="noreferrer"
-            className="group mt-8 inline-flex items-center gap-2 rounded-full bg-amber-500 px-8 py-3.5 text-sm font-semibold text-[#14231a] transition-transform hover:scale-105"
+            className="group mt-8 inline-flex items-center gap-2 rounded-full bg-amber-500 px-8 py-3.5 text-sm font-semibold text-[#1f3327] transition-transform hover:scale-105"
           >
             Join Now
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -581,7 +581,7 @@ const App = () => {
       </section>
 
       {/* ============ POISON NOTICE ============ */}
-      <section className="bg-[#14231a] px-6 py-16">
+      <section className="bg-[#1f3327] px-6 py-16">
         <Reveal className="mx-auto flex max-w-3xl flex-col items-center gap-4 rounded-3xl bg-red-950/40 p-8 text-center ring-1 ring-red-500/30 sm:flex-row sm:text-left">
           <Phone className="h-9 w-9 shrink-0 text-red-300" />
           <div className="flex-1">
@@ -603,7 +603,7 @@ const App = () => {
       </section>
 
       {/* ============ CONTACT / FOOTER ============ */}
-      <footer id="contact" className="relative overflow-hidden bg-[#0e1a12] px-6 pt-24 pb-10">
+      <footer id="contact" className="relative overflow-hidden bg-[#18291f] px-6 pt-24 pb-10">
         <FloatingMushroom species="inkcap" width={70} bobSeconds={6.5} delay={0.3} className="left-[8%] top-16 hidden md:block opacity-80" />
         <FloatingMushroom species="porcini" width={90} bobSeconds={5.5} delay={1} flip className="right-[8%] top-24 hidden md:block opacity-80" />
         <div className="relative z-10 mx-auto max-w-4xl text-center">
@@ -625,7 +625,7 @@ const App = () => {
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
               <a
                 href="https://cmsweb.org/contact-cms/"
-                className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold text-[#14231a] transition-transform hover:scale-105"
+                className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold text-[#1f3327] transition-transform hover:scale-105"
               >
                 <Mail className="h-4 w-4" />
                 Contact CMS
@@ -640,7 +640,7 @@ const App = () => {
                     key={s.label}
                     href={s.href}
                     aria-label={s.label}
-                    className="flex h-11 w-11 items-center justify-center rounded-full bg-[#1d3324] text-amber-200 ring-1 ring-white/5 transition-colors hover:bg-amber-500/20"
+                    className="flex h-11 w-11 items-center justify-center rounded-full bg-[#294634] text-amber-200 ring-1 ring-white/5 transition-colors hover:bg-amber-500/20"
                   >
                     <s.icon className="h-5 w-5" />
                   </a>
