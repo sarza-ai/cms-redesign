@@ -381,9 +381,6 @@ const App = () => {
         {/* Interactive mushroom row — its own band at the bottom, in normal
             flow so it can never overlap the hero text above */}
         <div className="relative z-10 mt-auto">
-          <p className="mb-1 text-center text-[11px] uppercase tracking-[0.25em] text-amber-100/40">
-            hover the mushrooms
-          </p>
           <div className="pointer-events-auto mx-auto flex max-w-7xl items-end justify-center gap-2 sm:gap-12 lg:gap-20 px-4">
             <HeroMushroom species="inkcap" swaySeconds={7} className="h-24 w-14 sm:h-40 sm:w-24" />
             <HeroMushroom species="chanterelle" swaySeconds={5.5} className="h-28 w-16 sm:h-48 sm:w-32" />
