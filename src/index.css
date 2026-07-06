@@ -61,6 +61,38 @@ body {
   }
 }
 
+/* Idle bob for scattered mushrooms — a gentle rise/fall + tiny rotate */
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1.5deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(1.5deg);
+  }
+}
+
+/* Extra wiggle triggered on hover */
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: rotate(-7deg);
+  }
+  25% {
+    transform: rotate(6deg);
+  }
+  50% {
+    transform: rotate(-5deg);
+  }
+  75% {
+    transform: rotate(4deg);
+  }
+}
+
+.animate-bob {
+  animation: bob ease-in-out infinite;
+}
+
 .animate-sway {
   transform-origin: bottom center;
   animation: sway ease-in-out infinite;
@@ -72,7 +104,8 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .animate-sway,
-  .animate-fade-up {
+  .animate-fade-up,
+  .animate-bob {
     animation: none;
   }
 }

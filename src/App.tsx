@@ -28,32 +28,49 @@ const IconYoutube = (p: { className?: string }) => (
 );
 
 /* ------------------------------------------------------------------ */
-/*  Interactive mushroom illustrations                                 */
-/*  Each is a hand-drawn SVG species. They idle-sway, and on hover     */
-/*  they pop up, tilt toward the cursor and the cap wobbles.           */
+/*  Real mushroom cutouts (extracted from the source art sheets)       */
 /* ------------------------------------------------------------------ */
 
-type MushroomProps = {
-  species: 'flyagaric' | 'chanterelle' | 'porcini' | 'morel' | 'inkcap';
+const M = {
+  flyagaric: '/mushrooms/m1.png',
+  turkeytail: '/mushrooms/m2.png',
+  morel: '/mushrooms/m3.png',
+  chanterelle: '/mushrooms/m4.png',
+  porcini: '/mushrooms/m5.png',
+  inkcap: '/mushrooms/m6.png',
+  oyster: '/mushrooms/m7.png',
+  parasol: '/mushrooms/m8.png',
+  lionsmane: '/mushrooms/m9.png',
+  puffball: '/mushrooms/m10.png',
+} as const;
+
+type Species = keyof typeof M;
+
+/* ------------------------------------------------------------------ */
+/*  HeroMushroom — big, interactive. Idle-sways, and on hover it pops  */
+/*  up, scales, and tilts toward the cursor.                           */
+/* ------------------------------------------------------------------ */
+
+const HeroMushroom = ({
+  species,
+  className = '',
+  swaySeconds = 6,
+}: {
+  species: Species;
   className?: string;
   swaySeconds?: number;
-};
-
-const Mushroom = ({ species, className = '', swaySeconds = 6 }: MushroomProps) => {
+}) => {
   const [hovered, setHovered] = useState(false);
   const [tilt, setTilt] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
 
   const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    const center = rect.left + rect.width / 2;
-    const dx = (e.clientX - center) / (rect.width / 2); // -1 .. 1
-    setTilt(Math.max(-1, Math.min(1, dx)) * 12);
+    const dx = (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
+    setTilt(Math.max(-1, Math.min(1, dx)) * 16);
   };
 
   return (
     <div
-      ref={ref}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => {
         setHovered(false);
@@ -64,145 +81,77 @@ const Mushroom = ({ species, className = '', swaySeconds = 6 }: MushroomProps) =
       style={{
         transformOrigin: 'bottom center',
         transform: hovered
-          ? `translateY(-14px) rotate(${tilt}deg) scale(1.08)`
+          ? `translateY(-22px) rotate(${tilt}deg) scale(1.12)`
           : 'translateY(0) rotate(0) scale(1)',
-        transition: 'transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)',
-        filter: 'drop-shadow(0 18px 18px rgba(0,0,0,0.35))',
+        transition: 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+        filter: 'drop-shadow(0 22px 18px rgba(0,0,0,0.45))',
       }}
     >
-      <div
-        className="animate-sway"
-        style={{ animationDuration: `${swaySeconds}s` }}
-      >
-        <SpeciesArt species={species} hovered={hovered} />
+      <div className="animate-sway h-full w-full" style={{ animationDuration: `${swaySeconds}s`, transformOrigin: 'bottom center' }}>
+        <img
+          src={M[species]}
+          alt={species}
+          draggable={false}
+          className="h-full w-full object-contain"
+        />
       </div>
     </div>
   );
 };
 
-const SpeciesArt = ({
-  species,
-  hovered,
-}: {
-  species: MushroomProps['species'];
-  hovered: boolean;
-}) => {
-  const capStyle = {
-    transformOrigin: '50% 60%',
-    transform: hovered ? 'scaleX(1.05) scaleY(0.96)' : 'scale(1)',
-    transition: 'transform 0.35s ease',
-  } as const;
+/* ------------------------------------------------------------------ */
+/*  FloatingMushroom — scattered decoration. Idle-bobs on its own and  */
+/*  pops + wiggles harder when you hover it.                           */
+/* ------------------------------------------------------------------ */
 
-  switch (species) {
-    case 'flyagaric':
-      return (
-        <svg viewBox="0 0 120 160" width="100%" height="100%">
-          <ellipse cx="60" cy="150" rx="30" ry="7" fill="#000" opacity="0.18" />
-          <path d="M52 96 q-6 40 -2 48 q10 6 20 0 q4 -8 -2 -48 Z" fill="#F3ECD9" />
-          <path d="M52 96 q-6 40 -2 48 q3 3 8 3 q-3 -30 2 -51 Z" fill="#E4D9BE" />
-          <g style={capStyle}>
-            <path
-              d="M60 20 C22 20 8 60 8 78 q0 10 12 10 h80 q12 0 12 -10 C112 60 98 20 60 20 Z"
-              fill="#C8352B"
-            />
-            <path
-              d="M60 20 C40 20 26 38 20 62 q40 -14 80 0 C94 38 80 20 60 20 Z"
-              fill="#D9463A"
-            />
-            <circle cx="40" cy="52" r="6" fill="#F7F1E1" />
-            <circle cx="62" cy="42" r="7" fill="#F7F1E1" />
-            <circle cx="84" cy="54" r="5.5" fill="#F7F1E1" />
-            <circle cx="52" cy="66" r="4.5" fill="#F7F1E1" />
-            <circle cx="74" cy="68" r="5" fill="#F7F1E1" />
-            <circle cx="98" cy="70" r="4" fill="#F7F1E1" />
-            <circle cx="24" cy="70" r="4" fill="#F7F1E1" />
-          </g>
-        </svg>
-      );
-    case 'chanterelle':
-      return (
-        <svg viewBox="0 0 120 160" width="100%" height="100%">
-          <ellipse cx="60" cy="150" rx="26" ry="6" fill="#000" opacity="0.18" />
-          <g style={capStyle}>
-            <path
-              d="M60 30 C40 30 30 50 26 70 q-4 20 34 20 q38 0 34 -20 C90 50 80 30 60 30 Z"
-              fill="#E8A62C"
-            />
-            <path
-              d="M28 74 q32 16 64 0 q-6 14 -32 14 q-26 0 -32 -14 Z"
-              fill="#C9861B"
-            />
-            <path d="M60 30 q-14 4 -20 30 q22 -10 40 0 q-6 -26 -20 -30 Z" fill="#F2BE55" />
-          </g>
-          <path d="M50 88 q2 34 4 54 q6 5 12 0 q2 -20 4 -54 q-10 -6 -20 0 Z" fill="#F0D89B" />
-          <path d="M50 88 q2 34 4 54 q3 2 6 2 q-2 -30 -1 -56 q-5 -1 -9 0 Z" fill="#E3C579" />
-        </svg>
-      );
-    case 'porcini':
-      return (
-        <svg viewBox="0 0 120 160" width="100%" height="100%">
-          <ellipse cx="60" cy="152" rx="32" ry="7" fill="#000" opacity="0.18" />
-          <path
-            d="M40 92 q-10 34 -6 54 q22 8 32 0 q4 -20 -6 -54 Z"
-            fill="#EFE2C8"
-          />
-          <path d="M40 92 q-10 34 -6 54 q6 3 10 3 q-4 -32 4 -57 Z" fill="#DDCBA6" />
-          <g style={capStyle}>
-            <path
-              d="M60 34 C32 34 14 58 14 76 q0 14 46 14 q46 0 46 -14 C106 58 88 34 60 34 Z"
-              fill="#8A5A2B"
-            />
-            <path
-              d="M60 34 C40 34 24 50 18 68 q42 -12 84 0 C96 50 80 34 60 34 Z"
-              fill="#A06E38"
-            />
-            <ellipse cx="46" cy="52" rx="10" ry="5" fill="#B98A4E" opacity="0.6" />
-          </g>
-        </svg>
-      );
-    case 'morel':
-      return (
-        <svg viewBox="0 0 120 160" width="100%" height="100%">
-          <ellipse cx="60" cy="152" rx="22" ry="6" fill="#000" opacity="0.18" />
-          <path d="M50 96 q0 30 2 52 q8 5 16 0 q2 -22 2 -52 Z" fill="#EDE3CB" />
-          <g style={capStyle}>
-            <path
-              d="M60 14 C42 14 36 44 38 70 q0 26 22 26 q22 0 22 -26 C84 44 78 14 60 14 Z"
-              fill="#8C7A4E"
-            />
-            <g fill="#5F5231">
-              <path d="M52 26 l8 -4 l6 6 l-6 6 l-8 -2 Z" />
-              <path d="M66 30 l8 0 l2 8 l-6 4 l-6 -6 Z" />
-              <path d="M46 40 l8 -2 l4 8 l-6 6 l-8 -4 Z" />
-              <path d="M60 44 l8 -2 l4 8 l-6 6 l-8 -4 Z" />
-              <path d="M52 58 l8 -2 l4 8 l-6 6 l-8 -4 Z" />
-              <path d="M66 60 l8 0 l2 8 l-6 4 l-6 -6 Z" />
-              <path d="M44 56 l6 0 l2 6 l-5 4 l-4 -5 Z" />
-            </g>
-          </g>
-        </svg>
-      );
-    case 'inkcap':
-    default:
-      return (
-        <svg viewBox="0 0 120 160" width="100%" height="100%">
-          <ellipse cx="60" cy="152" rx="20" ry="6" fill="#000" opacity="0.18" />
-          <path d="M54 70 q-4 44 0 78 q6 5 12 0 q4 -34 0 -78 Z" fill="#F1EBDD" />
-          <path d="M54 70 q-4 44 0 78 q3 2 6 2 q-2 -40 0 -80 Z" fill="#E0D8C4" />
-          <g style={capStyle}>
-            <path
-              d="M60 14 C46 14 42 40 44 60 q2 18 16 18 q14 0 16 -18 C78 40 74 14 60 14 Z"
-              fill="#B9AE96"
-            />
-            <path
-              d="M60 14 C52 14 48 34 49 56 q3 12 11 12 q8 0 11 -12 C72 34 68 14 60 14 Z"
-              fill="#CFC6B0"
-            />
-            <path d="M46 58 q14 8 28 0 q-2 12 -14 12 q-12 0 -14 -12 Z" fill="#4A4232" />
-          </g>
-        </svg>
-      );
-  }
+const FloatingMushroom = ({
+  species,
+  className = '',
+  width = 90,
+  bobSeconds = 5,
+  delay = 0,
+  flip = false,
+}: {
+  species: Species;
+  className?: string;
+  width?: number;
+  bobSeconds?: number;
+  delay?: number;
+  flip?: boolean;
+}) => {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div
+      className={`group pointer-events-auto absolute ${className}`}
+      style={{ width }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      {/* idle bob layer */}
+      <div
+        className="animate-bob"
+        style={{ animationDuration: `${bobSeconds}s`, animationDelay: `${delay}s` }}
+      >
+        {/* hover-reaction layer (transforms compose with the bob above) */}
+        <img
+          src={M[species]}
+          alt=""
+          draggable={false}
+          className="w-full select-none"
+          style={{
+            transform: hovered
+              ? `scale(1.28) rotate(${flip ? 8 : -8}deg)`
+              : `scale(1) rotate(${flip ? -3 : 3}deg)`,
+            transition: 'transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            filter: hovered
+              ? 'drop-shadow(0 16px 14px rgba(0,0,0,0.4))'
+              : 'drop-shadow(0 8px 8px rgba(0,0,0,0.28))',
+            animation: hovered ? 'wiggle 0.5s ease-in-out' : 'none',
+          }}
+        />
+      </div>
+    </div>
+  );
 };
 
 /* ------------------------------------------------------------------ */
@@ -238,7 +187,7 @@ const Spores = () => {
 };
 
 /* ------------------------------------------------------------------ */
-/*  Section helpers                                                    */
+/*  Scroll reveal                                                      */
 /* ------------------------------------------------------------------ */
 
 const Reveal = ({
@@ -262,85 +211,40 @@ const Reveal = ({
           obs.disconnect();
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.12 }
     );
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
   return (
-    <div
-      ref={ref}
-      style={style}
-      className={`${className} ${shown ? 'animate-fade-up' : 'opacity-0'}`}
-    >
+    <div ref={ref} style={style} className={`${className} ${shown ? 'animate-fade-up' : 'opacity-0'}`}>
       {children}
     </div>
   );
 };
 
 const Logo = () => (
-  <svg width="20" height="20" viewBox="0 0 120 160" aria-hidden="true">
-    <path
-      d="M60 24 C34 24 20 52 20 70 q0 10 40 10 q40 0 40 -10 C100 52 86 24 60 24 Z"
-      fill="#E8A62C"
-    />
-    <circle cx="44" cy="54" r="4" fill="#0f1a12" />
-    <circle cx="62" cy="46" r="4.5" fill="#0f1a12" />
-    <circle cx="80" cy="56" r="4" fill="#0f1a12" />
-    <path d="M52 80 q-4 30 0 44 q8 5 16 0 q4 -14 0 -44 Z" fill="#F3ECD9" />
-  </svg>
+  <img src={M.flyagaric} alt="" className="h-7 w-7 object-contain" draggable={false} />
 );
 
 /* ------------------------------------------------------------------ */
-/*  Data (pulled from cmsweb.org)                                      */
+/*  Data (from cmsweb.org)                                             */
 /* ------------------------------------------------------------------ */
 
 const NAV = ['Mission', 'Events', 'Society', 'Contact'];
 
 const EVENTS = [
-  {
-    date: 'JUL 12',
-    title: 'July Meeting: Agaricus of Colorado',
-    where: 'Gates Hall, Denver Botanic Gardens',
-  },
-  {
-    date: 'AUG 9',
-    title: 'CMS Mushroom Fair',
-    where: 'Mitchell Hall',
-  },
-  {
-    date: 'SEP 14',
-    title: 'Cook & Taste Event',
-    where: 'A celebration of the harvest',
-  },
-  {
-    date: 'OCT 12',
-    title: 'October Meeting',
-    where: 'Closing the foray season',
-  },
+  { date: 'JUL 12', title: 'July Meeting: Agaricus of Colorado', where: 'Gates Hall, Denver Botanic Gardens' },
+  { date: 'AUG 9', title: 'CMS Mushroom Fair', where: 'Mitchell Hall' },
+  { date: 'SEP 14', title: 'Cook & Taste Event', where: 'A celebration of the harvest' },
+  { date: 'OCT 12', title: 'October Meeting', where: 'Closing the foray season' },
 ];
 
 const PILLARS = [
-  {
-    icon: Users,
-    title: 'Membership Benefits',
-    body: 'Guided forays, monthly meetings, expert identification and a community of over a thousand mycophiles.',
-  },
-  {
-    icon: Sprout,
-    title: 'Special Interest Groups',
-    body: 'From cultivation to microscopy, dive deep with fellow enthusiasts. The Cultivation SIG meets the last Tuesday monthly.',
-  },
-  {
-    icon: Award,
-    title: 'CMS Awards',
-    body: 'Honoring members whose scholarship, teaching and stewardship advance Colorado mycology.',
-  },
-  {
-    icon: Calendar,
-    title: 'Volunteer',
-    body: 'Forays, fairs, classes and outreach are powered entirely by members who give their time.',
-  },
+  { icon: Users, title: 'Membership Benefits', body: 'Guided forays, monthly meetings, expert identification and a community of over a thousand mycophiles.' },
+  { icon: Sprout, title: 'Special Interest Groups', body: 'From cultivation to microscopy, dive deep with fellow enthusiasts. The Cultivation SIG meets the last Tuesday monthly.' },
+  { icon: Award, title: 'CMS Awards', body: 'Honoring members whose scholarship, teaching and stewardship advance Colorado mycology.' },
+  { icon: Calendar, title: 'Volunteer', body: 'Forays, fairs, classes and outreach are powered entirely by members who give their time.' },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -352,7 +256,6 @@ const App = () => {
     <div className="min-h-screen bg-[#14231a] text-[#f3ecd9]">
       {/* ============ HERO ============ */}
       <header className="relative min-h-screen overflow-hidden">
-        {/* Forest gradient backdrop */}
         <div
           className="absolute inset-0"
           style={{
@@ -360,7 +263,6 @@ const App = () => {
               'radial-gradient(120% 80% at 50% -10%, #23402c 0%, #17291d 45%, #0e1a12 100%)',
           }}
         />
-        {/* Sun rays */}
         <div
           className="absolute inset-0 opacity-40"
           style={{
@@ -368,12 +270,10 @@ const App = () => {
               'conic-gradient(from 210deg at 60% -5%, transparent 0deg, rgba(232,166,44,0.18) 20deg, transparent 40deg, rgba(232,166,44,0.12) 70deg, transparent 90deg)',
           }}
         />
-        {/* Drifting mist */}
         <div
           className="absolute bottom-0 left-0 right-0 h-64 opacity-30"
           style={{
-            background:
-              'linear-gradient(to top, rgba(180,200,170,0.25), transparent)',
+            background: 'linear-gradient(to top, rgba(180,200,170,0.25), transparent)',
             animation: 'mist 14s ease-in-out infinite alternate',
           }}
         />
@@ -405,7 +305,7 @@ const App = () => {
         {/* Hero copy */}
         <div className="relative z-10 mx-auto max-w-4xl px-6 pt-16 sm:pt-24 text-center">
           <p className="mb-5 inline-flex items-center gap-2 rounded-full bg-amber-500/10 px-4 py-1.5 text-[12px] font-medium uppercase tracking-[0.2em] text-amber-200 ring-1 ring-amber-500/25">
-            Est. community of mycophiles
+            A community of mycophiles
           </p>
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-semibold leading-[1.05] tracking-tight">
             Stalking the
@@ -436,23 +336,25 @@ const App = () => {
 
         {/* Interactive mushroom row along the forest floor */}
         <div className="pointer-events-none absolute bottom-0 left-0 right-0">
-          <div className="pointer-events-auto mx-auto flex max-w-6xl items-end justify-center gap-2 sm:gap-6 px-4 pb-4">
-            <Mushroom species="inkcap" swaySeconds={7} className="h-28 w-20 sm:h-40 sm:w-28" />
-            <Mushroom species="chanterelle" swaySeconds={5.5} className="h-32 w-24 sm:h-48 sm:w-32" />
-            <Mushroom species="flyagaric" swaySeconds={6.5} className="h-40 w-28 sm:h-60 sm:w-40" />
-            <Mushroom species="porcini" swaySeconds={5} className="h-36 w-28 sm:h-52 sm:w-36" />
-            <Mushroom species="morel" swaySeconds={7.5} className="h-28 w-20 sm:h-44 sm:w-28" />
+          <div className="pointer-events-auto mx-auto flex max-w-6xl items-end justify-center gap-1 sm:gap-4 px-4 pb-3">
+            <HeroMushroom species="inkcap" swaySeconds={7} className="h-28 w-16 sm:h-44 sm:w-24" />
+            <HeroMushroom species="chanterelle" swaySeconds={5.5} className="h-32 w-20 sm:h-52 sm:w-32" />
+            <HeroMushroom species="flyagaric" swaySeconds={6.5} className="h-40 w-24 sm:h-64 sm:w-40" />
+            <HeroMushroom species="porcini" swaySeconds={5} className="h-36 w-24 sm:h-56 sm:w-36" />
+            <HeroMushroom species="parasol" swaySeconds={7.5} className="h-32 w-20 sm:h-52 sm:w-28" />
           </div>
           <div className="h-6 w-full bg-gradient-to-t from-[#0e1a12] to-transparent" />
         </div>
-        <p className="absolute bottom-3 left-1/2 z-20 -translate-x-1/2 text-[11px] uppercase tracking-[0.25em] text-amber-100/40">
+        <p className="absolute bottom-2 left-1/2 z-20 -translate-x-1/2 text-[11px] uppercase tracking-[0.25em] text-amber-100/40">
           hover the mushrooms
         </p>
       </header>
 
       {/* ============ MISSION ============ */}
-      <section id="mission" className="bg-[#0e1a12] px-6 py-24 sm:py-32">
-        <Reveal className="mx-auto max-w-3xl text-center">
+      <section id="mission" className="relative overflow-hidden bg-[#0e1a12] px-6 py-24 sm:py-32">
+        <FloatingMushroom species="morel" width={90} bobSeconds={5.5} delay={0.2} className="left-[4%] top-16 hidden sm:block opacity-90" />
+        <FloatingMushroom species="turkeytail" width={110} bobSeconds={6.5} delay={0.8} flip className="right-[5%] bottom-12 hidden sm:block opacity-90" />
+        <Reveal className="relative z-10 mx-auto max-w-3xl text-center">
           <h2 className="text-sm font-semibold uppercase tracking-[0.25em] text-amber-400">
             Our Mission
           </h2>
@@ -465,8 +367,10 @@ const App = () => {
       </section>
 
       {/* ============ EVENTS ============ */}
-      <section id="events" className="bg-[#14231a] px-6 py-24 sm:py-28">
-        <div className="mx-auto max-w-5xl">
+      <section id="events" className="relative overflow-hidden bg-[#14231a] px-6 py-24 sm:py-28">
+        <FloatingMushroom species="oyster" width={120} bobSeconds={7} delay={0.4} className="right-[3%] top-24 hidden lg:block opacity-80" />
+        <FloatingMushroom species="puffball" width={80} bobSeconds={5} delay={1.1} flip className="left-[3%] bottom-24 hidden lg:block opacity-80" />
+        <div className="relative z-10 mx-auto max-w-5xl">
           <Reveal className="mb-12 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
             <div>
               <h2 className="text-sm font-semibold uppercase tracking-[0.25em] text-amber-400">
@@ -521,8 +425,10 @@ const App = () => {
       </section>
 
       {/* ============ SOCIETY ============ */}
-      <section id="society" className="bg-[#0e1a12] px-6 py-24 sm:py-28">
-        <div className="mx-auto max-w-5xl">
+      <section id="society" className="relative overflow-hidden bg-[#0e1a12] px-6 py-24 sm:py-28">
+        <FloatingMushroom species="lionsmane" width={110} bobSeconds={6} delay={0.6} className="left-[4%] top-28 hidden lg:block opacity-80" />
+        <FloatingMushroom species="chanterelle" width={80} bobSeconds={5.5} delay={1.3} flip className="right-[4%] bottom-28 hidden lg:block opacity-80" />
+        <div className="relative z-10 mx-auto max-w-5xl">
           <Reveal className="mb-14 text-center">
             <h2 className="text-sm font-semibold uppercase tracking-[0.25em] text-amber-400">
               The Society
@@ -539,12 +445,8 @@ const App = () => {
                   <span className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-amber-500/15 text-amber-300">
                     <p.icon className="h-6 w-6" />
                   </span>
-                  <h3 className="text-xl font-semibold text-amber-50">
-                    {p.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-amber-50/60">
-                    {p.body}
-                  </p>
+                  <h3 className="text-xl font-semibold text-amber-50">{p.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-amber-50/60">{p.body}</p>
                 </div>
               </Reveal>
             ))}
@@ -575,13 +477,17 @@ const App = () => {
       </section>
 
       {/* ============ CONTACT / FOOTER ============ */}
-      <footer id="contact" className="bg-[#0e1a12] px-6 pt-24 pb-10">
-        <div className="mx-auto max-w-4xl text-center">
+      <footer id="contact" className="relative overflow-hidden bg-[#0e1a12] px-6 pt-24 pb-10">
+        <FloatingMushroom species="inkcap" width={70} bobSeconds={6.5} delay={0.3} className="left-[8%] top-16 hidden md:block opacity-80" />
+        <FloatingMushroom species="porcini" width={90} bobSeconds={5.5} delay={1} flip className="right-[8%] top-24 hidden md:block opacity-80" />
+        <div className="relative z-10 mx-auto max-w-4xl text-center">
           <Reveal>
-            <Mushroom
-              species="flyagaric"
-              swaySeconds={6}
-              className="mx-auto mb-6 h-24 w-16"
+            <img
+              src={M.flyagaric}
+              alt=""
+              className="animate-bob mx-auto mb-6 h-24 w-auto object-contain"
+              style={{ filter: 'drop-shadow(0 14px 12px rgba(0,0,0,0.4))' }}
+              draggable={false}
             />
             <h2 className="text-3xl sm:text-5xl font-semibold text-amber-50">
               Come stalk with us.
@@ -618,8 +524,8 @@ const App = () => {
           </Reveal>
 
           <div className="mt-16 border-t border-white/10 pt-6 text-xs text-amber-50/40">
-            Colorado Mycological Society · Stalking the Wild Mushroom® ·
-            Denver, Colorado
+            Colorado Mycological Society · Stalking the Wild Mushroom® · Denver,
+            Colorado
           </div>
         </div>
       </footer>
