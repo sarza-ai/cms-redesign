@@ -232,7 +232,6 @@ const Logo = () => (
 /* ------------------------------------------------------------------ */
 
 const NAV: { label: string; href: string; external?: boolean }[] = [
-  { label: 'About', href: 'https://cmsweb.org/about/', external: true },
   { label: 'Events', href: '#events' },
   { label: 'Society', href: '#society' },
   { label: 'Blog', href: 'https://cmsweb.org/blog/', external: true },
@@ -240,11 +239,20 @@ const NAV: { label: string; href: string; external?: boolean }[] = [
   { label: 'Join', href: '#join' },
 ];
 
-const QUICKLINKS = [
-  { label: 'Meetings', href: '#events' },
-  { label: 'Forays', href: '#events' },
-  { label: 'Science', href: '#society' },
-  { label: 'Recipes', href: 'https://cmsweb.org/recipes/' },
+// One link labelled beneath each hero mushroom (left to right)
+const HERO_MUSHROOMS: {
+  species: Species;
+  sway: number;
+  cls: string;
+  label: string;
+  href: string;
+  external?: boolean;
+}[] = [
+  { species: 'inkcap', sway: 7, cls: 'h-24 w-14 sm:h-40 sm:w-24', label: 'About', href: 'https://cmsweb.org/about/', external: true },
+  { species: 'chanterelle', sway: 5.5, cls: 'h-28 w-16 sm:h-48 sm:w-32', label: 'Meetings', href: '#events' },
+  { species: 'flyagaric', sway: 6.5, cls: 'h-36 w-20 sm:h-60 sm:w-40', label: 'Forays', href: '#events' },
+  { species: 'porcini', sway: 5, cls: 'h-32 w-20 sm:h-52 sm:w-36', label: 'Science', href: '#society' },
+  { species: 'parasol', sway: 7.5, cls: 'h-28 w-16 sm:h-48 sm:w-28', label: 'Recipes', href: 'https://cmsweb.org/recipes/', external: true },
 ];
 
 const STATS = [
@@ -360,33 +368,24 @@ const App = () => {
               Join the Society
             </a>
           </div>
-
-          {/* Quick links (from the original homepage) */}
-          <div className="mt-7 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[13px] font-medium text-amber-100/60">
-            {QUICKLINKS.map((q, i) => (
-              <span key={q.label} className="flex items-center gap-x-5">
-                {i > 0 && <span className="text-amber-100/20">·</span>}
-                <a
-                  href={q.href}
-                  {...(q.href.startsWith('http') ? { target: '_blank', rel: 'noreferrer' } : {})}
-                  className="transition-colors hover:text-amber-300"
-                >
-                  {q.label}
-                </a>
-              </span>
-            ))}
-          </div>
         </div>
 
         {/* Interactive mushroom row — its own band at the bottom, in normal
             flow so it can never overlap the hero text above */}
         <div className="relative z-10 mt-auto">
-          <div className="pointer-events-auto mx-auto flex max-w-7xl items-end justify-center gap-2 sm:gap-12 lg:gap-20 px-4">
-            <HeroMushroom species="inkcap" swaySeconds={7} className="h-24 w-14 sm:h-40 sm:w-24" />
-            <HeroMushroom species="chanterelle" swaySeconds={5.5} className="h-28 w-16 sm:h-48 sm:w-32" />
-            <HeroMushroom species="flyagaric" swaySeconds={6.5} className="h-36 w-20 sm:h-60 sm:w-40" />
-            <HeroMushroom species="porcini" swaySeconds={5} className="h-32 w-20 sm:h-52 sm:w-36" />
-            <HeroMushroom species="parasol" swaySeconds={7.5} className="h-28 w-16 sm:h-48 sm:w-28" />
+          <div className="pointer-events-auto mx-auto flex max-w-7xl items-end justify-center gap-2 sm:gap-10 lg:gap-16 px-4">
+            {HERO_MUSHROOMS.map((m) => (
+              <div key={m.label} className="flex flex-col items-center">
+                <HeroMushroom species={m.species} swaySeconds={m.sway} className={m.cls} />
+                <a
+                  href={m.href}
+                  {...(m.external ? { target: '_blank', rel: 'noreferrer' } : {})}
+                  className="mt-3 text-[13px] font-medium tracking-wide text-amber-100/70 transition-colors hover:text-amber-300"
+                >
+                  {m.label}
+                </a>
+              </div>
+            ))}
           </div>
           <div className="h-5 w-full bg-gradient-to-t from-[#18291f] to-transparent" />
         </div>
