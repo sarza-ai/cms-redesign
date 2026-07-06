@@ -375,16 +375,17 @@ const App = () => {
         <div className="relative z-10 mt-auto">
           <div className="pointer-events-auto mx-auto flex max-w-7xl items-end justify-center gap-2 sm:gap-10 lg:gap-16 px-4">
             {HERO_MUSHROOMS.map((m) => (
-              <div key={m.label} className="flex flex-col items-center">
+              <a
+                key={m.label}
+                href={m.href}
+                {...(m.external ? { target: '_blank', rel: 'noreferrer' } : {})}
+                className="group/col flex flex-col items-center"
+              >
                 <HeroMushroom species={m.species} swaySeconds={m.sway} className={m.cls} />
-                <a
-                  href={m.href}
-                  {...(m.external ? { target: '_blank', rel: 'noreferrer' } : {})}
-                  className="mt-3 text-[13px] font-medium tracking-wide text-amber-100/70 transition-colors hover:text-amber-300"
-                >
+                <span className="mt-3 text-[13px] font-medium tracking-wide text-amber-100/70 transition-colors group-hover/col:text-amber-300">
                   {m.label}
-                </a>
-              </div>
+                </span>
+              </a>
             ))}
           </div>
           <div className="h-5 w-full bg-gradient-to-t from-[#18291f] to-transparent" />
