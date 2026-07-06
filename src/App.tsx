@@ -336,7 +336,7 @@ const App = () => {
 
         {/* Interactive mushroom row along the forest floor */}
         <div className="pointer-events-none absolute bottom-0 left-0 right-0">
-          <div className="pointer-events-auto mx-auto flex max-w-6xl items-end justify-center gap-1 sm:gap-4 px-4 pb-3">
+          <div className="pointer-events-auto mx-auto flex max-w-7xl items-end justify-center gap-2 sm:gap-12 lg:gap-20 px-4 pb-3">
             <HeroMushroom species="inkcap" swaySeconds={7} className="h-28 w-16 sm:h-44 sm:w-24" />
             <HeroMushroom species="chanterelle" swaySeconds={5.5} className="h-32 w-20 sm:h-52 sm:w-32" />
             <HeroMushroom species="flyagaric" swaySeconds={6.5} className="h-40 w-24 sm:h-64 sm:w-40" />
