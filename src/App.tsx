@@ -288,17 +288,17 @@ const SIGS = [
 
 const App = () => {
   return (
-    <div className="min-h-screen bg-[#1f3327] text-[#f3ecd9]">
+    <div id="top" className="min-h-screen bg-[#1f3327] text-[#f3ecd9]">
       {/* ============ STICKY NAV ============ */}
       <nav className="sticky top-0 z-50 flex items-center justify-between gap-3 border-b border-white/5 bg-[#18291f]/80 px-4 py-2.5 backdrop-blur-md sm:px-10 sm:py-3 lg:px-16">
-        <div className="flex items-center gap-2.5">
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#294634] ring-1 ring-amber-500/30 sm:h-11 sm:w-11">
+        <a href="#top" aria-label="Home" className="group flex items-center gap-2.5">
+          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#294634] ring-1 ring-amber-500/30 transition-transform group-hover:scale-110 sm:h-11 sm:w-11">
             <Logo />
           </span>
-          <span className="hidden sm:block text-sm font-semibold tracking-wide text-amber-100/90">
+          <span className="hidden text-sm font-semibold tracking-wide text-amber-100/90 transition-colors group-hover:text-amber-100 sm:block">
             Colorado Mycological Society
           </span>
-        </div>
+        </a>
         <div className="flex items-center gap-0.5 overflow-x-auto rounded-full bg-[#294634]/80 px-1.5 py-1.5 ring-1 ring-white/5 sm:gap-1 sm:px-2">
           {NAV.map((n) => (
             <a
