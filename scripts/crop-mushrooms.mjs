@@ -93,20 +93,29 @@ for (let s = 0; s < N; s++) {
     if (y > 0 && !outside[p - width] && !labels[p - width]) { labels[p - width] = cur; stack[q++] = p - width; }
     if (y < height - 1 && !outside[p + width] && !labels[p + width]) { labels[p + width] = cur; stack[q++] = p + width; }
   }
-  comps.push({ minX, minY, maxX, maxY, area, cx: (minX + maxX) / 2, cy: (minY + maxY) / 2 });
+  comps.push({ label: cur, minX, minY, maxX, maxY, area, cx: (minX + maxX) / 2, cy: (minY + maxY) / 2 });
 }
 
 const bodies = comps.filter((c) => c.area >= MAIN_AREA).sort((a, b) => a.cx - b.cx);
+bodies.forEach((b) => (b.labels = new Set([b.label])));
 const smalls = comps.filter((c) => c.area >= ABSORB_AREA && c.area < MAIN_AREA);
+
+// Absorb only small blobs sitting directly at the base of a body (grass/roots
+// fused visually but split into their own blob). Strict so neighbouring
+// mushrooms' fragments are NOT pulled in.
 for (const s of smalls) {
   let best = null, bestD = Infinity;
   for (const b of bodies) {
-    if (s.cx >= b.minX - 30 && s.cx <= b.maxX + 30 && s.cy >= b.minY - 20 && s.cy <= b.maxY + 90) {
+    const halfW = (b.maxX - b.minX) * 0.32;
+    const nearX = Math.abs(s.cx - b.cx) < halfW;
+    const atBase = s.cy > b.maxY - 25 && s.cy < b.maxY + 55;
+    if (nearX && atBase) {
       const d = Math.abs(s.cx - b.cx);
       if (d < bestD) { bestD = d; best = b; }
     }
   }
   if (best) {
+    best.labels.add(s.label);
     best.minX = Math.min(best.minX, s.minX); best.minY = Math.min(best.minY, s.minY);
     best.maxX = Math.max(best.maxX, s.maxX); best.maxY = Math.max(best.maxY, s.maxY);
   }
@@ -122,15 +131,35 @@ for (const b of bodies) {
   const h = Math.min(height - top, Math.round(b.maxY - b.minY) + 1 + PAD * 2);
   if (w <= 0 || h <= 0) continue;
   n++;
+
+  // Build a crop buffer that keeps ONLY this body's own component pixels
+  // (plus absorbed base blobs). Everything else -> transparent. This removes
+  // neighbouring mushrooms that overlap the rectangular bounding box.
+  const crop = Buffer.alloc(w * h * 4);
+  for (let yy = 0; yy < h; yy++) {
+    for (let xx = 0; xx < w; xx++) {
+      const sx = left + xx, sy = top + yy;
+      const si = sy * width + sx;
+      const di = (yy * w + xx) * 4;
+      if (b.labels.has(labels[si])) {
+        crop[di] = data[si * channels];
+        crop[di + 1] = data[si * channels + 1];
+        crop[di + 2] = data[si * channels + 2];
+        crop[di + 3] = 255;
+      } else {
+        crop[di + 3] = 0;
+      }
+    }
+  }
   const name = `${OUT}/${PREFIX}${n}.png`;
-  console.log(`  ${name}  extract{left:${left},top:${top},w:${w},h:${h}} (area ${b.area})`);
+  console.log(`  ${name}  ${w}x${h} labels:${b.labels.size} (area ${b.area})`);
   try {
-    await sharp(out, { raw: { width, height, channels: 4 } })
-      .extract({ left, top, width: w, height: h })
+    await sharp(crop, { raw: { width: w, height: h, channels: 4 } })
+      .trim({ background: { r: 0, g: 0, b: 0, alpha: 0 }, threshold: 0 })
       .png()
       .toFile(name);
-  } catch (err) {
-    console.log(`    !! ${err.message}`);
+  } catch {
+    await sharp(crop, { raw: { width: w, height: h, channels: 4 } }).png().toFile(name);
   }
 }
 console.log(`Wrote ${n} mushrooms.`);
