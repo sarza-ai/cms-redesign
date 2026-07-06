@@ -282,7 +282,7 @@ const App = () => {
   return (
     <div className="min-h-screen bg-[#14231a] text-[#f3ecd9]">
       {/* ============ HERO ============ */}
-      <header className="relative min-h-screen overflow-hidden">
+      <header className="relative flex min-h-screen flex-col overflow-hidden">
         <div
           className="absolute inset-0"
           style={{
@@ -330,8 +330,8 @@ const App = () => {
           </div>
         </nav>
 
-        {/* Hero copy */}
-        <div className="relative z-10 mx-auto max-w-4xl px-6 pt-16 sm:pt-24 text-center">
+        {/* Hero copy — centered in the space between the nav and the mushrooms */}
+        <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-6 py-8 text-center">
           <p className="mb-5 inline-flex items-center gap-2 rounded-full bg-amber-500/10 px-4 py-1.5 text-[12px] font-medium uppercase tracking-[0.2em] text-amber-200 ring-1 ring-amber-500/25">
             A community of mycophiles
           </p>
@@ -378,20 +378,21 @@ const App = () => {
           </div>
         </div>
 
-        {/* Interactive mushroom row along the forest floor */}
-        <div className="pointer-events-none absolute bottom-0 left-0 right-0">
-          <div className="pointer-events-auto mx-auto flex max-w-7xl items-end justify-center gap-2 sm:gap-12 lg:gap-20 px-4 pb-3">
-            <HeroMushroom species="inkcap" swaySeconds={7} className="h-28 w-16 sm:h-44 sm:w-24" />
-            <HeroMushroom species="chanterelle" swaySeconds={5.5} className="h-32 w-20 sm:h-52 sm:w-32" />
-            <HeroMushroom species="flyagaric" swaySeconds={6.5} className="h-40 w-24 sm:h-64 sm:w-40" />
-            <HeroMushroom species="porcini" swaySeconds={5} className="h-36 w-24 sm:h-56 sm:w-36" />
-            <HeroMushroom species="parasol" swaySeconds={7.5} className="h-32 w-20 sm:h-52 sm:w-28" />
+        {/* Interactive mushroom row — its own band at the bottom, in normal
+            flow so it can never overlap the hero text above */}
+        <div className="relative z-10 mt-auto">
+          <p className="mb-1 text-center text-[11px] uppercase tracking-[0.25em] text-amber-100/40">
+            hover the mushrooms
+          </p>
+          <div className="pointer-events-auto mx-auto flex max-w-7xl items-end justify-center gap-2 sm:gap-12 lg:gap-20 px-4">
+            <HeroMushroom species="inkcap" swaySeconds={7} className="h-24 w-14 sm:h-40 sm:w-24" />
+            <HeroMushroom species="chanterelle" swaySeconds={5.5} className="h-28 w-16 sm:h-48 sm:w-32" />
+            <HeroMushroom species="flyagaric" swaySeconds={6.5} className="h-36 w-20 sm:h-60 sm:w-40" />
+            <HeroMushroom species="porcini" swaySeconds={5} className="h-32 w-20 sm:h-52 sm:w-36" />
+            <HeroMushroom species="parasol" swaySeconds={7.5} className="h-28 w-16 sm:h-48 sm:w-28" />
           </div>
-          <div className="h-6 w-full bg-gradient-to-t from-[#0e1a12] to-transparent" />
+          <div className="h-5 w-full bg-gradient-to-t from-[#0e1a12] to-transparent" />
         </div>
-        <p className="absolute bottom-2 left-1/2 z-20 -translate-x-1/2 text-[11px] uppercase tracking-[0.25em] text-amber-100/40">
-          hover the mushrooms
-        </p>
       </header>
 
       {/* ============ ABOUT ============ */}
