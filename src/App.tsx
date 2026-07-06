@@ -231,20 +231,47 @@ const Logo = () => (
 /*  Data (from cmsweb.org)                                             */
 /* ------------------------------------------------------------------ */
 
-const NAV = ['Mission', 'Events', 'Society', 'Contact'];
-
-const EVENTS = [
-  { date: 'JUL 12', title: 'July Meeting: Agaricus of Colorado', where: 'Gates Hall, Denver Botanic Gardens' },
-  { date: 'AUG 9', title: 'CMS Mushroom Fair', where: 'Mitchell Hall' },
-  { date: 'SEP 14', title: 'Cook & Taste Event', where: 'A celebration of the harvest' },
-  { date: 'OCT 12', title: 'October Meeting', where: 'Closing the foray season' },
+const NAV: { label: string; href: string; external?: boolean }[] = [
+  { label: 'About', href: '#about' },
+  { label: 'Events', href: '#events' },
+  { label: 'Society', href: '#society' },
+  { label: 'Blog', href: 'https://cmsweb.org/blog/', external: true },
+  { label: 'Shop', href: 'https://cmsweb.org/shop/', external: true },
+  { label: 'Join', href: '#join' },
 ];
 
+const QUICKLINKS = [
+  { label: 'Meetings', href: '#events' },
+  { label: 'Forays', href: '#events' },
+  { label: 'Science', href: '#society' },
+  { label: 'Recipes', href: 'https://cmsweb.org/recipes/' },
+];
+
+const STATS = [
+  { value: '1964', label: 'Founded in Denver' },
+  { value: '1,400+', label: 'Active members' },
+  { value: 'Non-profit', label: 'Volunteer run' },
+];
+
+const EVENTS = [
+  { cat: 'Meeting', date: 'JUL 12', title: 'James Chelin: Agaricus of Colorado', where: 'Gates Hall, Denver Botanic Gardens' },
+  { cat: 'Fair', date: 'AUG 9', title: 'CMS Mushroom Fair', where: 'Mitchell Hall' },
+  { cat: 'Class', date: 'SEP 14', title: 'Cook & Taste Event', where: 'A celebration of the harvest' },
+  { cat: 'Meeting', date: 'OCT 12', title: 'October Meeting', where: 'Closing the foray season' },
+];
+
+const EVENT_CATEGORIES = ['Forays', 'Meetings', 'Classes', 'Fairs'];
+
 const PILLARS = [
-  { icon: Users, title: 'Membership Benefits', body: 'Guided forays, monthly meetings, expert identification and a community of over a thousand mycophiles.' },
-  { icon: Sprout, title: 'Special Interest Groups', body: 'From cultivation to microscopy, dive deep with fellow enthusiasts. The Cultivation SIG meets the last Tuesday monthly.' },
+  { icon: Users, title: 'Membership Benefits', body: 'Guided forays, monthly meetings, expert identification and a community of over 1,400 mycophiles across Colorado.' },
   { icon: Award, title: 'CMS Awards', body: 'Honoring members whose scholarship, teaching and stewardship advance Colorado mycology.' },
   { icon: Calendar, title: 'Volunteer', body: 'Forays, fairs, classes and outreach are powered entirely by members who give their time.' },
+];
+
+const SIGS = [
+  { title: 'Microscopy & DNA Barcoding', body: 'Advanced identification using microscopy and barcoding, with access to gear, shared techniques and results, and visiting specialists. Meets year round.' },
+  { title: 'Medicinal Mycology', body: 'Monthly discussions of medicinal mushrooms, their biochemistry and health applications, with members in healthcare and alternative medicine.' },
+  { title: 'Cultivation', body: 'For cultivators of all levels, sharing techniques, knowledge and genetics through swaps, presentations, tours and workshops. Meets the last Tuesday monthly at Edgewater Public Market.' },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -289,14 +316,15 @@ const App = () => {
               Colorado Mycological Society
             </span>
           </div>
-          <div className="flex items-center gap-1 rounded-full bg-[#1d3324]/80 px-2 py-1.5 ring-1 ring-white/5 backdrop-blur">
+          <div className="flex max-w-[60vw] items-center gap-0.5 overflow-x-auto rounded-full bg-[#1d3324]/80 px-2 py-1.5 ring-1 ring-white/5 backdrop-blur sm:gap-1">
             {NAV.map((n) => (
               <a
-                key={n}
-                href={`#${n.toLowerCase()}`}
-                className="rounded-full px-3.5 py-1.5 text-[13px] font-medium text-amber-50/80 transition-colors hover:bg-amber-500/15 hover:text-amber-100"
+                key={n.label}
+                href={n.href}
+                {...(n.external ? { target: '_blank', rel: 'noreferrer' } : {})}
+                className="shrink-0 rounded-full px-3 py-1.5 text-[13px] font-medium text-amber-50/80 transition-colors hover:bg-amber-500/15 hover:text-amber-100 sm:px-3.5"
               >
-                {n}
+                {n.label}
               </a>
             ))}
           </div>
@@ -326,11 +354,27 @@ const App = () => {
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </a>
             <a
-              href="#society"
+              href="#join"
               className="rounded-full px-6 py-3 text-sm font-semibold text-amber-50/80 ring-1 ring-white/15 transition-colors hover:bg-white/5"
             >
               Join the Society
             </a>
+          </div>
+
+          {/* Quick links (from the original homepage) */}
+          <div className="mt-7 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[13px] font-medium text-amber-100/60">
+            {QUICKLINKS.map((q, i) => (
+              <span key={q.label} className="flex items-center gap-x-5">
+                {i > 0 && <span className="text-amber-100/20">·</span>}
+                <a
+                  href={q.href}
+                  {...(q.href.startsWith('http') ? { target: '_blank', rel: 'noreferrer' } : {})}
+                  className="transition-colors hover:text-amber-300"
+                >
+                  {q.label}
+                </a>
+              </span>
+            ))}
           </div>
         </div>
 
@@ -350,20 +394,47 @@ const App = () => {
         </p>
       </header>
 
-      {/* ============ MISSION ============ */}
-      <section id="mission" className="relative overflow-hidden bg-[#0e1a12] px-6 py-24 sm:py-32">
+      {/* ============ ABOUT ============ */}
+      <section id="about" className="relative overflow-hidden bg-[#0e1a12] px-6 py-24 sm:py-32">
         <FloatingMushroom species="morel" width={90} bobSeconds={5.5} delay={0.2} className="left-[4%] top-16 hidden sm:block opacity-90" />
         <FloatingMushroom species="turkeytail" width={110} bobSeconds={6.5} delay={0.8} flip className="right-[5%] bottom-12 hidden sm:block opacity-90" />
-        <Reveal className="relative z-10 mx-auto max-w-3xl text-center">
-          <h2 className="text-sm font-semibold uppercase tracking-[0.25em] text-amber-400">
-            Our Mission
-          </h2>
-          <p className="mt-6 text-2xl sm:text-4xl font-medium leading-snug text-amber-50">
-            To promote the study and enjoyment of mushrooms, and the science of
-            mycology, through education, forays, cultivation and fellowship
-            across Colorado.
-          </p>
-        </Reveal>
+        <div className="relative z-10 mx-auto max-w-3xl text-center">
+          <Reveal>
+            <h2 className="text-sm font-semibold uppercase tracking-[0.25em] text-amber-400">
+              Our Mission
+            </h2>
+            <p className="mt-6 text-2xl sm:text-4xl font-medium leading-snug text-amber-50">
+              To promote the study and appreciation of mycology. We discover,
+              photograph, identify, collect and preserve mushrooms.
+            </p>
+          </Reveal>
+
+          <Reveal className="mt-8 space-y-4 text-base text-amber-50/70">
+            <p>
+              The Colorado Mycological Society is a non-profit organization of
+              professional, amateur and citizen mycologists. Founded in 1964 by
+              Dr. Sam Mitchel, a Denver physician who could find no mushroom
+              collection at the city's Natural History Museum, we've grown into a
+              community of more than 1,400 active members.
+            </p>
+            <p>
+              We encourage the protection of natural areas and their biological
+              integrity, and advocate the sustainable use of mushrooms as a
+              resource through responsible collecting.
+            </p>
+          </Reveal>
+
+          <Reveal className="mt-12 grid grid-cols-3 gap-4">
+            {STATS.map((s) => (
+              <div key={s.label} className="rounded-2xl bg-[#1d3324]/50 p-5 ring-1 ring-white/5">
+                <div className="text-2xl sm:text-3xl font-bold text-amber-400">
+                  {s.value}
+                </div>
+                <div className="mt-1 text-xs text-amber-50/55">{s.label}</div>
+              </div>
+            ))}
+          </Reveal>
+        </div>
       </section>
 
       {/* ============ EVENTS ============ */}
@@ -380,10 +451,16 @@ const App = () => {
                 Upcoming Events
               </p>
             </div>
-            <p className="max-w-xs text-sm text-amber-50/60">
-              Meetings, forays, classes and fairs run spring through fall. Open
-              to members and the curious alike.
-            </p>
+            <div className="flex flex-wrap gap-2">
+              {EVENT_CATEGORIES.map((c) => (
+                <span
+                  key={c}
+                  className="rounded-full bg-amber-500/10 px-3 py-1 text-xs font-medium text-amber-200 ring-1 ring-amber-500/25"
+                >
+                  {c}
+                </span>
+              ))}
+            </div>
           </Reveal>
 
           <div className="space-y-3">
@@ -402,6 +479,9 @@ const App = () => {
                     </span>
                   </div>
                   <div className="min-w-0 flex-1">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400/80">
+                      {e.cat}
+                    </span>
                     <p className="truncate text-lg font-semibold text-amber-50">
                       {e.title}
                     </p>
@@ -438,7 +518,7 @@ const App = () => {
             </p>
           </Reveal>
 
-          <div className="grid gap-5 sm:grid-cols-2">
+          <div className="grid gap-5 sm:grid-cols-3">
             {PILLARS.map((p, i) => (
               <Reveal key={p.title} style={{ animationDelay: `${i * 80}ms` } as React.CSSProperties}>
                 <div className="h-full rounded-2xl bg-[#1d3324]/50 p-7 ring-1 ring-white/5 transition-colors hover:ring-amber-500/25">
@@ -451,7 +531,55 @@ const App = () => {
               </Reveal>
             ))}
           </div>
+
+          {/* Special Interest Groups */}
+          <Reveal className="mt-16 mb-8 flex items-center gap-3">
+            <Sprout className="h-6 w-6 text-amber-400" />
+            <h3 className="text-2xl font-semibold text-amber-50">
+              Special Interest Groups
+            </h3>
+          </Reveal>
+          <div className="grid gap-5 md:grid-cols-3">
+            {SIGS.map((s, i) => (
+              <Reveal key={s.title} style={{ animationDelay: `${i * 80}ms` } as React.CSSProperties}>
+                <div className="h-full rounded-2xl bg-[#1d3324]/40 p-6 ring-1 ring-white/5 transition-colors hover:ring-amber-500/25">
+                  <h4 className="text-lg font-semibold text-amber-100">{s.title}</h4>
+                  <p className="mt-2 text-sm leading-relaxed text-amber-50/60">{s.body}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </div>
+      </section>
+
+      {/* ============ JOIN / MEMBERSHIP ============ */}
+      <section id="join" className="relative overflow-hidden bg-[#14231a] px-6 py-24 sm:py-28">
+        <FloatingMushroom species="parasol" width={90} bobSeconds={6} delay={0.5} className="left-[6%] top-20 hidden lg:block opacity-80" />
+        <FloatingMushroom species="turkeytail" width={100} bobSeconds={6.5} delay={1.2} flip className="right-[6%] bottom-20 hidden lg:block opacity-80" />
+        <Reveal className="relative z-10 mx-auto max-w-2xl overflow-hidden rounded-3xl bg-gradient-to-br from-[#1d3324] to-[#0e1a12] p-10 text-center ring-1 ring-amber-500/20 sm:p-14">
+          <h2 className="text-sm font-semibold uppercase tracking-[0.25em] text-amber-400">
+            Become a Member
+          </h2>
+          <p className="mt-4 text-3xl sm:text-4xl font-semibold text-amber-50">
+            Join for just{' '}
+            <span className="text-amber-400">$26</span>
+            <span className="text-xl text-amber-50/60">/year</span>
+          </p>
+          <p className="mx-auto mt-4 max-w-md text-amber-50/70">
+            Membership includes guided forays, monthly meetings, classes, the
+            annual Mushroom Fair, special interest groups and a thriving
+            community of fellow mycophiles.
+          </p>
+          <a
+            href="https://cmsweb.org/join/"
+            target="_blank"
+            rel="noreferrer"
+            className="group mt-8 inline-flex items-center gap-2 rounded-full bg-amber-500 px-8 py-3.5 text-sm font-semibold text-[#14231a] transition-transform hover:scale-105"
+          >
+            Join Now
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+          </a>
+        </Reveal>
       </section>
 
       {/* ============ POISON NOTICE ============ */}
@@ -523,7 +651,28 @@ const App = () => {
             </div>
           </Reveal>
 
-          <div className="mt-16 border-t border-white/10 pt-6 text-xs text-amber-50/40">
+          <div className="mt-16 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 border-t border-white/10 pt-8 text-sm text-amber-50/60">
+            {[
+              { label: 'About', href: '#about' },
+              { label: 'Events', href: '#events' },
+              { label: 'Society', href: '#society' },
+              { label: 'Blog', href: 'https://cmsweb.org/blog/' },
+              { label: 'Shop', href: 'https://cmsweb.org/shop/' },
+              { label: 'Bylaws', href: 'https://cmsweb.org/bylaws/' },
+              { label: 'Links', href: 'https://cmsweb.org/links/' },
+              { label: 'Contact Us', href: 'https://cmsweb.org/contact-cms/' },
+            ].map((l) => (
+              <a
+                key={l.label}
+                href={l.href}
+                {...(l.href.startsWith('http') ? { target: '_blank', rel: 'noreferrer' } : {})}
+                className="transition-colors hover:text-amber-300"
+              >
+                {l.label}
+              </a>
+            ))}
+          </div>
+          <div className="mt-6 text-xs text-amber-50/40">
             Colorado Mycological Society · Stalking the Wild Mushroom® · Denver,
             Colorado
           </div>
